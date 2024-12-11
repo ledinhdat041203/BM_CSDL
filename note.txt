@@ -1,0 +1,18 @@
+Quản lí nhân viên:
+
+- Đăng ký, Đăng nhập:
++ giới hạn số lần nhập sai mk
++ yêu cầu đổi mật khẩu sau ... ngày
+- xem danh sách nhân viên
+- phân công công việc
+- tính lương
+- Phân quyền:
++ nhân viên
++ quản lý phòng
++ giám đốc
++ kế toán
++ 
+
+- Nhân viên thuộc phòng ban này không được phép xem hay chỉnh sửa bất kỳ thông tin nào của những nhân viên thuộc phòng ban khác. 
+- Các nhân viên được phép xem (select) các thông tin của những người trong cùng phòng ban. 
+- Nhân viên không được phép insert/delete trên bảng. 
