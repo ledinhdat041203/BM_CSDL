@@ -9,16 +9,16 @@ END;
 
 -- Cap quyen cho user quan ly chinh sach
 GRANT ACCESS_DEPARTMENT_DBA TO policy_manager; 
--- --Package dùng ð? t?o ra các thành ph?n c?a nh?n 
+-- --Package d ng  ? t?o ra c c th nh ph?n c?a nh?n 
 GRANT execute ON sa_components TO policy_manager; 
--- --Package dùng ð? t?o các nh?n 
+-- --Package d ng  ? t?o c c nh?n 
 GRANT execute ON sa_label_admin TO policy_manager; 
--- --Package dùng ð? gán chính sách cho các table/schema 
+-- --Package d ng  ? g n ch nh s ch cho c c table/schema 
 GRANT execute ON sa_policy_admin TO policy_manager; 
 
 --Cap quyen cho user quan li truy cap cua user khac
 GRANT ACCESS_DEPARTMENT_DBA TO sec_manager; 
--- --Package dùng ð? gán các label cho user 
+-- --Package d ng  ? g n c c label cho user 
 GRANT execute ON sa_user_admin TO sec_manager; 
 GRANT execute ON sa_label_admin TO sec_manager; 
 GRANT execute ON sa_policy_admin TO sec_manager; 
@@ -86,17 +86,17 @@ END;
 
 --b4. Gan Nhan cho du lieu
 --connect user policy_manager
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:TECH')WHERE job_title='Nhân viên' AND DEPARTMENT_ID = 'pb01'; 
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:FIN')WHERE job_title='Nhân viên' AND DEPARTMENT_ID = 'pb02';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:BUS')WHERE job_title='Nhân viên' AND DEPARTMENT_ID = 'pb03';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:MAR')WHERE job_title='Nhân viên' AND DEPARTMENT_ID = 'pb04';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:HR')WHERE job_title='Nhân viên' AND DEPARTMENT_ID = 'pb05';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:TECH')WHERE job_title='NhÃ¢n viÃªn' AND DEPARTMENT_ID = 'pb01'; 
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:FIN')WHERE job_title='NhÃ¢n viÃªn' AND DEPARTMENT_ID = 'pb02';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:BUS')WHERE job_title='NhÃ¢n viÃªn' AND DEPARTMENT_ID = 'pb03';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:MAR')WHERE job_title='NhÃ¢n viÃªn' AND DEPARTMENT_ID = 'pb04';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'PUB:HR')WHERE job_title='NhÃ¢n viÃªn' AND DEPARTMENT_ID = 'pb05';
 
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:TECH')WHERE job_title='Trý?ng ph?ng' AND DEPARTMENT_ID = 'pb01'; 
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:FIN')WHERE job_title='Trý?ng ph?ng' AND DEPARTMENT_ID = 'pb02';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:BUS')WHERE job_title='Trý?ng ph?ng' AND DEPARTMENT_ID = 'pb03';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:MAR')WHERE job_title='Trý?ng ph?ng' AND DEPARTMENT_ID = 'pb04';
-UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:HR') WHERE job_title='Trý?ng ph?ng' AND DEPARTMENT_ID = 'pb05';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:TECH')WHERE job_title='TrÆ°á»Ÿng phÃ²ng' AND DEPARTMENT_ID = 'pb01'; 
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:FIN')WHERE job_title='TrÆ°á»Ÿng phÃ²ng' AND DEPARTMENT_ID = 'pb02';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:BUS')WHERE job_title='TrÆ°á»Ÿng phÃ²ng' AND DEPARTMENT_ID = 'pb03';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:MAR')WHERE job_title='TrÆ°á»Ÿng phÃ²ng' AND DEPARTMENT_ID = 'pb04';
+UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'CONF:HR') WHERE job_title='TrÆ°á»Ÿng phÃ²ng' AND DEPARTMENT_ID = 'pb05';
 
 UPDATE managerdb.employees SET OLS_DEPT = char_to_label('ACCESS_DEPARTMENT', 'SENS:TECH,FIN,BUS,MAR,HR,DIR')WHERE DEPARTMENT_ID = 'pb06';
 commit;
@@ -147,7 +147,7 @@ BEGIN sa_user_admin.set_user_labels (
 END; 
 COMMIT;
 
--- xoa chinh sach cu või option NO CONTROL de tao chinh sach moi
+-- xoa chinh sach cu v i option NO CONTROL de tao chinh sach moi
 --connect user policy_manager
 
 --xoa chinh sach
@@ -159,4 +159,7 @@ BEGIN
     sa_policy_admin.apply_table_policy (policy_name => 'ACCESS_DEPARTMENT',schema_name => 'managerdb',table_name => 'employees',
                                         table_options   =>  'LABEL_DEFAULT, READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL'); 
 END;
+
+
+SELECT SYS_CONTEXT('USERENV', 'SESSION_USER') FROM DUAL;
 
