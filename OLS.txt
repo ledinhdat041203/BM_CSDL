@@ -1,0 +1,4 @@
+-LBACSYS - tạo ra chính sách chung (kiểu như định nghĩa chính sách)
+	+ 1 chính sách được tạo ra sẽ tương ứng với 1 role <tên chính sách>_DBA
+- user sec_policy: quản lý chính sách (tạo ra các nhãn, gán cho các table)
+- user sec_manager: quản lý truy xuất của các user (gán quyền truy xuất vào bảng cho các user, gán nhãn cho user)

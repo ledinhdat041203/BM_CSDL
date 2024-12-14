@@ -1,6 +1,6 @@
 --connect user managerdb
 
-CREATE TABLE managerdb.employees (
+CREATE TABLE data_manager.employees (
     employee_id VARCHAR2(50) PRIMARY KEY,
     user_name VARCHAR2(50),
     pass VARCHAR2(50),
@@ -12,12 +12,12 @@ CREATE TABLE managerdb.employees (
     job_title VARCHAR2(50)
 );
 
-CREATE TABLE managerdb.departments (
+CREATE TABLE data_manager.departments (
     department_id VARCHAR2(50) PRIMARY KEY,
     department_name VARCHAR2(100)
 );
 
-CREATE TABLE managerdb.salaries (
+CREATE TABLE data_manager.salaries (
     employee_id VARCHAR2(50) PRIMARY KEY,
     salary_amount NUMBER,
     start_date DATE,
@@ -25,17 +25,36 @@ CREATE TABLE managerdb.salaries (
 );
 
 
-INSERT INTO managerdb.employees (
-    employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title
-) VALUES (
-    'nv01', 'ledat', 'ledinhdat', 'dat', 'lee', '123-456-7890', 'pb01', 50000, 'Developer'
-);
-SELECT * FROM employees
+INSERT ALL
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv01', 'ledat', 'ledinhdat', 'dat', 'lee', '123-456-7890', 'pb03', 50000, 'Giam doc')
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv02', 'leduong', 'ledinhdat', 'duong', 'lee', '123-456-7890', 'pb01', 50000, 'Truong phong')
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv03', 'tranvandai', 'ledinhdat', 'dai', 'tran van', '123-456-7890', 'pb01', 50000, 'Developer')
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv04', 'lehung', 'ledinhdat', 'hung', 'lee', '123-456-7890', 'pb02', 50000, 'Truong phong')
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv05', 'lehy', 'ledinhdat', 'hy', 'lee', '123-456-7890', 'pb02', 50000, 'Developer')
+    INTO managerdb.employees (employee_id, user_name, pass, first_name, last_name, phone_number, department_id, salary, job_title)
+        VALUES ('nv06', 'chihung', 'ledinhdat', 'hung', 'chi', '123-456-7890', 'pb02', 50000, 'Developer')
+SELECT * FROM dual;
+COMMIT;
 
 
----- create user
---CREATE USER ledat IDENTIFIED BY ledinhdat 
---DEFAULT TABLESPACE users 
---QUOTA UNLIMITED ON users;
---GRANT CREATE SESSION TO ledat;
---GRANT SELECT, INSERT, UPDATE, DELETE ON managerdb.employees TO ledat;
+SELECT * FROM managerdb.employees
+
+DELETE FROM managerdb.employees
+
+BEGIN
+    managerdb.create_oracle_user_proc('leduong', 'ledinhdat');
+END;
+
+
+DROP USER leduong
+
+ALTER TABLE managerdb.employees DROP (OLS_DEPT);
+
+
+SELECT * FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+
