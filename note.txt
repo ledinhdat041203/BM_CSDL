@@ -8,18 +8,20 @@ Quản lí nhân viên:
 - tính lương
 - Phân quyền:
 + nhân viên
-+ quản lý phòng
++ trưởng phòng
 + giám đốc
 + kế toán
-+ 
+- Phòng ban:
++ phòng kĩ thuật-pb01
++ phòng tài chính-pb02
++ phòng kinh doanh-pb03
++ phòng marketing-pb04
++ phòng nhân sự-pb05
++ Ban Giám đốc-pb06
 - Thông báo (có thể là thông báo cho toàn công ty, thông báo riêng cho phòng ban, thông báo cho riêng 1 cá nhân, thông báo riêng cho quản lý các phòng)
 
 - Nhân viên thuộc phòng ban này không được phép xem hay chỉnh sửa bất kỳ thông tin nào của những nhân viên thuộc phòng ban khác. 
 - Các nhân viên được phép xem (select) các thông tin của những người trong cùng phòng ban. 
 - Nhân viên không được phép insert/delete trên bảng.
+- chỉ phòng nhân sự được phép thêm nhân viên vào các phòng nhưng vẫn không được xem lương
 
-OLS:
-- kiểm soát truy cập theo bản ghi, thông qua nhãn
-	+ level: cho biết độ nhạy cảm của dữ liệu, chỉ người dùng có quyền cao hơn hoặc bằng mới có thể truy cập
-	+ Compartment: cho biết dữ liệu thuộc lĩnh vực (phân vùng) nào.
-VD: người dùng chỉ được xem nhân viên của phòng ban mình (dùng Compartment) và chỉ thấy thông tin những người có chức vụ nhỏ hơn hoặc bằng (dùng level)
