@@ -1,0 +1,3 @@
+--kiểm tra policy function
+col predicate format a50; 
+SELECT policy_manager.policy_salary_emp predicate FROM DUAL;
