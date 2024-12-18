@@ -73,17 +73,24 @@ async function deleteRoleRepo(roleName) {
   }
 }
 
-async function findAllProfileNameRepo(profileName) {
+async function findAllRoleRepo() {
   let connection = null;
 
   try {
     connection = await getPool().getConnection();
     const result = await connection.execute(
-      "SELECT DISTINCT PROFILE \
-        FROM DBA_PROFILES "
+      "SELECT * \
+        FROM DBA_ROLES "
     );
 
-    return result.rows;
+    const rows = result.rows;
+    const listRole = rows.map((role) => ({
+      ROLE: role[0],
+      ROLE_ID: role[1],
+      PASSWORD_REQUIRED: role[2],
+      AUTHENCATION_TYPE: role[3],
+    }));
+    return listRole;
   } catch (err) {
     throw new Error(err.message);
   } finally {
@@ -91,4 +98,9 @@ async function findAllProfileNameRepo(profileName) {
   }
 }
 
-module.exports = { createRoleRepo, updateRoleRepo, deleteRoleRepo };
+module.exports = {
+  createRoleRepo,
+  updateRoleRepo,
+  deleteRoleRepo,
+  findAllRoleRepo,
+};

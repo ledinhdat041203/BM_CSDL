@@ -4,6 +4,7 @@ const {
   createRole,
   updateRole,
   deleteRole,
+  findAllRole,
 } = require("../business/roleService");
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.post("/create", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "role created successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -50,7 +51,7 @@ router.post("/update", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "role updated successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -65,7 +66,21 @@ router.post("/delete", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Role deleted successfully",
-      user: result,
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all", async (req, res) => {
+  try {
+    const result = await findAllRole();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });

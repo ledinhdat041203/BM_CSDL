@@ -1,1 +1,4 @@
 web_demo/BE/node_modules/
+web_demo/BE/.env/
+web_demo/fe/node_modules/
+web_demo/fe/.env/

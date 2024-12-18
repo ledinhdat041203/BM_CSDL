@@ -43,7 +43,7 @@ router.post("/create", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "User created successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -77,7 +77,7 @@ router.post("/update", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "User updated successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -93,7 +93,7 @@ router.post("/delete", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -107,7 +107,7 @@ router.get("/find-all", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });

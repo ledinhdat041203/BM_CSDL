@@ -210,16 +210,180 @@ END;
 GRANT EXECUTE ON delete_role_proc TO PUBLIC;
 
 
---grant system permessions
+--grant object table permessions
+CREATE OR REPLACE PROCEDURE grant_obj_permissions_proc (
+    p_name  IN VARCHAR2,
+    p_permissions IN VARCHAR2,    
+    p_table IN VARCHAR2,
+    p_grant_option IN BOOLEAN
+) AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+BEGIN
+        v_sql := 'GRANT ' ||  p_permissions || ' ON ' || p_table || ' TO ' || p_name;
+        IF p_grant_option THEN
+            v_sql := v_sql || ' WITH GRANT OPTION';
+        END IF;
+        EXECUTE IMMEDIATE v_sql;
+END;
+GRANT EXECUTE ON grant_obj_permissions_proc TO PUBLIC;
+
 CREATE OR REPLACE PROCEDURE grant_sys_permissions_proc (
+    p_name  IN VARCHAR2,
+    p_permissions IN VARCHAR2,
+    p_grant_option IN BOOLEAN DEFAULT FALSE
+) AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+BEGIN
+        v_sql := 'GRANT ' ||  p_permissions || ' TO ' || p_name;
+         IF p_grant_option THEN
+            v_sql := v_sql || ' WITH GRANT OPTION';
+        END IF;
+        EXECUTE IMMEDIATE v_sql;
+END;
+GRANT EXECUTE ON grant_sys_permissions_proc TO PUBLIC;
+
+--revoke object table permessions
+CREATE OR REPLACE PROCEDURE revoke_obj_permissions_proc (
+    p_name  IN VARCHAR2,
+    p_permissions IN VARCHAR2,    
+    p_table IN VARCHAR2
+) AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+BEGIN
+        v_sql := 'REVOKE ' ||  p_permissions || ' ON ' || p_table || ' FROM ' || p_name;
+        EXECUTE IMMEDIATE v_sql;
+END;
+
+GRANT EXECUTE ON revoke_obj_permissions_proc TO PUBLIC;
+
+--Revoke sys permission
+CREATE OR REPLACE PROCEDURE revoke_sys_permissions_proc (
     p_name  IN VARCHAR2,
     p_permissions IN VARCHAR2
 ) AUTHID CURRENT_USER
 IS
     v_sql VARCHAR2(4000);
 BEGIN
-        v_sql := 'GRANT ' ||  p_permissions || ' TO ' || p_name;
+        v_sql := 'REVOKE ' ||  p_permissions || ' FROM ' || p_name;
         EXECUTE IMMEDIATE v_sql;
 END;
-GRANT EXECUTE ON grant_sys_permissions_proc TO PUBLIC;
+
+GRANT EXECUTE ON revoke_sys_permissions_proc TO PUBLIC;
+
+--select sys permission
+CREATE OR REPLACE FUNCTION select_sys_permissions_func (
+    p_name IN VARCHAR2
+) RETURN SYS_REFCURSOR
+AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+    v_check_per BOOLEAN := false;
+    v_check NUMBER;
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    BEGIN
+        SELECT COUNT(*)
+        INTO v_check
+        FROM ALL_TAB_PRIVS
+        WHERE TABLE_NAME = 'DBA_SYS_PRIVS'
+          AND PRIVILEGE = 'SELECT'
+          AND UPPER(GRANTEE) = UPPER(p_name);
+        v_check_per := (v_check > 0);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            v_check_per := false;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+    END;
+
+    IF v_check_per THEN
+        v_sql := 'SELECT * FROM DBA_SYS_PRIVS';
+    ELSE
+        v_sql := 'SELECT * FROM USER_SYS_PRIVS';
+    END IF;
+
+    OPEN v_cursor FOR v_sql;
+    RETURN v_cursor;
+END;
+
+GRANT EXECUTE ON select_sys_permissions_func TO PUBLIC;
+
+CREATE OR REPLACE FUNCTION select_obj_permissions_func (
+    p_name IN VARCHAR2
+) RETURN SYS_REFCURSOR
+AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+    v_check_per BOOLEAN := false;
+    v_check NUMBER;
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    BEGIN
+        SELECT COUNT(*)
+        INTO v_check
+        FROM ALL_TAB_PRIVS
+        WHERE TABLE_NAME = 'DBA_TAB_PRIVS'
+          AND PRIVILEGE = 'SELECT'
+          AND UPPER(GRANTEE) = UPPER(p_name);
+        v_check_per := (v_check > 0);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            v_check_per := false;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+    END;
+
+    IF v_check_per THEN
+        v_sql := 'SELECT * FROM DBA_TAB_PRIVS';
+    ELSE
+        v_sql := 'SELECT * FROM USER_TAB_PRIVS';
+    END IF;
+
+    OPEN v_cursor FOR v_sql;
+    RETURN v_cursor;
+END;
+
+GRANT EXECUTE ON select_obj_permissions_func TO PUBLIC;
+
+--select role
+CREATE OR REPLACE FUNCTION select_role_func (
+    p_name IN VARCHAR2
+) RETURN SYS_REFCURSOR
+AUTHID CURRENT_USER
+IS
+    v_sql VARCHAR2(4000);
+    v_check_per BOOLEAN := false;
+    v_check NUMBER;
+    v_cursor SYS_REFCURSOR;
+BEGIN
+    BEGIN
+        SELECT COUNT(*)
+        INTO v_check
+        FROM ALL_TAB_PRIVS
+        WHERE TABLE_NAME = 'DBA_TAB_PRIVS'
+          AND PRIVILEGE = 'SELECT'
+          AND UPPER(GRANTEE) = UPPER(p_name);
+        v_check_per := (v_check > 0);
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            v_check_per := false;
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Unexpected error: ' || SQLERRM);
+    END;
+
+    IF v_check_per THEN
+        v_sql := 'SELECT * FROM DBA_TAB_PRIVS';
+    ELSE
+        v_sql := 'SELECT * FROM USER_TAB_PRIVS';
+    END IF;
+
+    OPEN v_cursor FOR v_sql;
+    RETURN v_cursor;
+END;
+
+GRANT EXECUTE ON select_obj_permissions_func TO PUBLIC;
+
 

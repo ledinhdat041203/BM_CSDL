@@ -5,6 +5,8 @@ const {
   updateprofile,
   deleteProfile,
   findAllProfileName,
+  findAllProfile,
+  profileDetail,
 } = require("../business/profileService");
 const router = express.Router();
 
@@ -28,7 +30,7 @@ router.post("/create", async (req, res) => {
     res.status(201).json({
       success: true,
       message: "profile created successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -55,7 +57,7 @@ router.post("/update", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "profile updated successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -70,7 +72,7 @@ router.post("/delete", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Profile deleted successfully",
-      user: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -84,7 +86,36 @@ router.get("/find-all-name", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "successfully",
-      user: result,
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all", async (req, res) => {
+  try {
+    const result = await findAllProfile();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/detail", async (req, res) => {
+  try {
+    const { profileName } = req.query;
+    const result = await profileDetail(profileName);
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
