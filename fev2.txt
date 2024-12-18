@@ -1,0 +1,227 @@
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Box,
+  Container,
+  Avatar,
+  Paper,
+  Tabs,
+  Tab
+} from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { styled } from "@mui/system";
+import { FaUsers, FaUserTag, FaUserCog, FaBars } from "react-icons/fa";
+
+const drawerWidth = 240;
+
+const Main = styled("main")(({ theme, open }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: `-${drawerWidth}px`,
+  ...(open && {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  }),
+}));
+
+const UserManagement = () => {
+  const [open, setOpen] = useState(true);
+  const [selectedMenu, setSelectedMenu] = useState("users");
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const mockUsers = [
+    { id: 1, name: "John Doe", email: "john@oracle.com", status: "Active", avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d", department: "Engineering", role: "Developer", systemAccess: "Full", lastLogin: "2023-10-15", deviceType: "Desktop" },
+    { id: 2, name: "Jane Smith", email: "jane@oracle.com", status: "Inactive", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330", department: "Marketing", role: "Manager", systemAccess: "Limited", lastLogin: "2023-10-14", deviceType: "Mobile" },
+    { id: 3, name: "Mike Johnson", email: "mike@oracle.com", status: "Active", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36", department: "Sales", role: "Executive", systemAccess: "Full", lastLogin: "2023-10-13", deviceType: "Laptop" },
+    { id: 4, name: "Sarah Wilson", email: "sarah@oracle.com", status: "Active", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80", department: "HR", role: "Admin", systemAccess: "Full", lastLogin: "2023-10-12", deviceType: "Desktop" },
+  ];
+
+  const columns = [
+    {
+      field: "avatar",
+      headerName: "Avatar",
+      width: 100,
+      renderCell: (params) => (
+        <Avatar
+          src={params.value}
+          alt={params.row.name}
+          sx={{ width: 40, height: 40 }}
+        />
+      ),
+    },
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "email", headerName: "Email", width: 250 },
+    { field: "status", headerName: "Status", width: 150 },
+  ];
+
+  const menuItems = [
+    { text: "Users", icon: <FaUsers />, value: "users" },
+    { text: "Roles", icon: <FaUserTag />, value: "roles" },
+    { text: "Profiles", icon: <FaUserCog />, value: "profiles" },
+  ];
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
+  const handleMenuSelect = (value) => {
+    setSelectedMenu(value);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
+  const handleRowClick = (params) => {
+    setSelectedUser(params.row);
+  };
+
+  const renderUserInfo = () => {
+    if (!selectedUser) return <Typography>Please select a user from the table</Typography>;
+
+    return (
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="h6">User Information</Typography>
+        <Box sx={{ mt: 1 }}>
+          <Typography><strong>Department:</strong> {selectedUser.department}</Typography>
+          <Typography><strong>Role:</strong> {selectedUser.role}</Typography>
+          <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
+          <Typography><strong>Status:</strong> {selectedUser.status}</Typography>
+        </Box>
+      </Box>
+    );
+  };
+
+  const renderSystemInfo = () => {
+    if (!selectedUser) return <Typography>Please select a user from the table</Typography>;
+
+    return (
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="h6">System Information</Typography>
+        <Box sx={{ mt: 1 }}>
+          <Typography><strong>System Access:</strong> {selectedUser.systemAccess}</Typography>
+          <Typography><strong>Last Login:</strong> {selectedUser.lastLogin}</Typography>
+          <Typography><strong>Device Type:</strong> {selectedUser.deviceType}</Typography>
+        </Box>
+      </Box>
+    );
+  };
+
+  const renderContent = () => {
+    switch (selectedMenu) {
+      case "users":
+        return (
+          <Box>
+            <Paper sx={{ mb: 2 }}>
+              <Tabs value={selectedTab} onChange={handleTabChange} centered>
+                <Tab label="User Info" />
+                <Tab label="System Info" />
+              </Tabs>
+            </Paper>
+            <Paper elevation={3} sx={{ height: 400, width: "100%", mb: 2 }}>
+              <DataGrid
+                rows={mockUsers}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                checkboxSelection
+                disableSelectionOnClick
+                onRowClick={handleRowClick}
+              />
+            </Paper>
+            {selectedTab === 0 ? renderUserInfo() : renderSystemInfo()}
+          </Box>
+        );
+      case "roles":
+        return (
+          <Typography variant="h6">Roles Management Content</Typography>
+        );
+      case "profiles":
+        return (
+          <Typography variant="h6">Profiles Management Content</Typography>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Box sx={{ display: "flex" }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+          ml: open ? `${drawerWidth}px` : 0,
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            onClick={handleDrawerToggle}
+            edge="start"
+            sx={{ mr: 2 }}
+          >
+            <FaBars />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Oracle User Management
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <Toolbar />
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              button
+              key={item.value}
+              onClick={() => handleMenuSelect(item.value)}
+              selected={selectedMenu === item.value}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+
+      <Main open={open}>
+        <Toolbar />
+        <Container maxWidth="lg">
+          {renderContent()}
+        </Container>
+      </Main>
+    </Box>
+  );
+};
+
+export default UserManagement;

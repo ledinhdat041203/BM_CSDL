@@ -2,6 +2,7 @@ const {
   createRoleRepo,
   updateRoleRepo,
   deleteRoleRepo,
+  findAllRoleRepo,
 } = require("../data/roleRepository");
 
 async function createRole(role) {
@@ -31,4 +32,13 @@ async function deleteRole(roleName) {
   }
 }
 
-module.exports = { createRole, updateRole, deleteRole };
+async function findAllRole() {
+  try {
+    const result = await findAllRoleRepo();
+    return result;
+  } catch (err) {
+    throw new Error(err.message || "Error delete user");
+  }
+}
+
+module.exports = { createRole, updateRole, deleteRole, findAllRole };
