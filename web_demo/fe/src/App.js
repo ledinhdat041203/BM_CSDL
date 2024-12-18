@@ -1,10 +1,10 @@
 import "./App.css";
-import ManagementPanel from "./components/ManagementPanel";
+import Home from "./components/Home";
 
 function App() {
   return (
     <>
-      <ManagementPanel />
+      <Home />
     </>
   );
 }
