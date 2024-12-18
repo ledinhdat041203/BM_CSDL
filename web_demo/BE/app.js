@@ -6,7 +6,9 @@ const userRoutes = require("./routes/userRouter");
 const profileRouter = require("./routes/profileRouter");
 const roleRouter = require("./routes/roleRouter");
 const permissionRouter = require("./routes/permissionRouter");
+const cors = require("cors");
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
