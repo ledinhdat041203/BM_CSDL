@@ -1,28 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
   Paper,
   Tabs,
   Tab,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Stepper,
-  Step,
-  StepLabel,
   Avatar,
   IconButton,
-  Typography,
   TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { FaUserPlus, FaEdit } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { findAllUser } from "../API/userApi copy";
+import UserFormDialog from "./UserDialog";
 
 const UserManagement = ({}) => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -31,17 +26,19 @@ const UserManagement = ({}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [userForm, setUserForm] = useState({
-    name: "",
+    userId: "",
+    fullName: "",
+    phone: "",
     email: "",
-    department: "",
+    userName: "",
+    pass: "",
+    quota: "",
+    profile: "",
     role: "",
     status: "",
-    systemAccess: "",
-    deviceType: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-
-  const steps = ["Basic Information", "Department & Role", "System Settings"];
+  const [users, setUsers] = useState([]);
 
   const mockUsers = [
     {
@@ -94,7 +91,7 @@ const UserManagement = ({}) => {
     },
   ];
 
-  const columns = [
+  const userInfoColumns = [
     {
       field: "avatar",
       headerName: "Avatar",
@@ -122,50 +119,90 @@ const UserManagement = ({}) => {
     },
   ];
 
-  const renderUserInfo = () => {
-    if (!selectedUser)
-      return <Typography>Please select a user from the table</Typography>;
+  const sysInfoColumns = [
+    { field: "USERNAME", headerName: "USERNAME", width: 100 },
+    { field: "ACCOUNT_STATUS", headerName: "ACCOUNT_STATUS", width: 200 },
+    { field: "LOCK_DATE", headerName: "LOCK_DATE", width: 250 },
+    { field: "CREATED", headerName: "CREATED", width: 150 },
+    {
+      field: "TEMPORARY_TABLESPACE",
+      headerName: "TEMPORARY_TABLESPACE",
+      width: 150,
+    },
+    {
+      field: "DEFAULT_TABLESPACE",
+      headerName: "DEFAULT_TABLESPACE",
+      width: 150,
+    },
+    { field: "PROFILE", headerName: "PROFILE", width: 150 },
+    {
+      field: "ACTION",
+      headerName: "ACTION",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+            width: "100%",
+          }}
+        >
+          <IconButton
+            onClick={() => handleEdit(params.row)}
+            sx={{ color: "#1976D2" }}
+          >
+            <FaEdit />
+          </IconButton>
 
-    return (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6">User Information</Typography>
-        <Box sx={{ mt: 1 }}>
-          <Typography>
-            <strong>Department:</strong> {selectedUser.department}
-          </Typography>
-          <Typography>
-            <strong>Role:</strong> {selectedUser.role}
-          </Typography>
-          <Typography>
-            <strong>Email:</strong> {selectedUser.email}
-          </Typography>
-          <Typography>
-            <strong>Status:</strong> {selectedUser.status}
-          </Typography>
+          <IconButton
+            onClick={() => handleDelete(params.row)}
+            sx={{ color: "#F44336" }}
+          >
+            <RiDeleteBin6Line />
+          </IconButton>
         </Box>
-      </Box>
+      ),
+    },
+  ];
+
+  const renderUserInfo = () => {
+    return (
+      <DataGrid
+        rows={mockUsers}
+        columns={userInfoColumns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+      />
     );
   };
 
   const renderSystemInfo = () => {
-    if (!selectedUser)
-      return <Typography>Please select a user from the table</Typography>;
-
     return (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6">System Information</Typography>
-        <Box sx={{ mt: 1 }}>
-          <Typography>
-            <strong>System Access:</strong> {selectedUser.systemAccess}
-          </Typography>
-          <Typography>
-            <strong>Last Login:</strong> {selectedUser.lastLogin}
-          </Typography>
-          <Typography>
-            <strong>Device Type:</strong> {selectedUser.deviceType}
-          </Typography>
-        </Box>
-      </Box>
+      <DataGrid
+        rows={users}
+        getRowId={(row) => row.USERNAME}
+        columns={sysInfoColumns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        pageSizeOptions={[10]}
+        slots={{ toolbar: GridToolbar }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+        }}
+      />
     );
   };
 
@@ -278,6 +315,10 @@ const UserManagement = ({}) => {
     }
   };
 
+  const handleDelete = (selectedProfile) => {
+    console.log("delete");
+  };
+
   const handleEdit = (user) => {
     setIsEditing(true);
     setUserForm(user);
@@ -316,12 +357,22 @@ const UserManagement = ({}) => {
     handleClose();
   };
 
-  const handleRowClick = (params) => {
-    setSelectedUser(params.row);
-  };
-
   const handleTabChange = (event, newValue) => setSelectedTab(newValue);
 
+  const fetchUses = async () => {
+    try {
+      const response = await findAllUser();
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedTab === 1) {
+      fetchUses();
+    }
+  }, [selectedTab]);
   return (
     <Box>
       <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
@@ -333,25 +384,22 @@ const UserManagement = ({}) => {
           Add User
         </Button>
       </Box>
+
       <Paper sx={{ mb: 2 }}>
         <Tabs value={selectedTab} onChange={handleTabChange} centered>
           <Tab label="User Info" />
           <Tab label="System Info" />
         </Tabs>
       </Paper>
-      <Paper elevation={3} sx={{ height: 400, width: "100%", mb: 2 }}>
-        <DataGrid
-          rows={mockUsers}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          disableSelectionOnClick
-        />
-      </Paper>
-      {selectedTab === 0 ? renderUserInfo() : renderSystemInfo()}
 
-      <Dialog open={dialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+      <Paper
+        elevation={3}
+        sx={{ height: 400, width: "100%", mb: 2, maxWidth: "1600px" }}
+      >
+        {selectedTab === 0 ? renderUserInfo() : renderSystemInfo()}
+      </Paper>
+
+      {/* <Dialog open={dialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>{isEditing ? "Edit User" : "Add New User"}</DialogTitle>
         <DialogContent>
           <Stepper activeStep={activeStep} sx={{ mt: 2, mb: 4 }}>
@@ -378,7 +426,20 @@ const UserManagement = ({}) => {
             </Button>
           )}
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
+
+      <UserFormDialog
+        dialogOpen={dialogOpen}
+        handleClose={handleClose}
+        isEditing={isEditing}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        userForm={userForm}
+        setUserForm={setUserForm}
+        handleNext={handleNext}
+        handleBack={handleBack}
+        handleSave={handleSave}
+      />
     </Box>
   );
 };

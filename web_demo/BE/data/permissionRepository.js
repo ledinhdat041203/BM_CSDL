@@ -310,6 +310,69 @@ async function findAllObjPermissionRepo() {
   }
 }
 
+async function findAllSysPermissionOfRoleRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const user = connection._pool._impl._user;
+    const result = await connection.execute(
+      `
+        SELECT *
+        FROM ROLE_SYS_PRIVS
+        `
+    );
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
+async function findAllObjPermissionOfRoleRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const user = connection._pool._impl._user;
+    const result = await connection.execute(
+      `
+        SELECT *
+        FROM ROLE_TAB_PRIVS
+        `
+    );
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
+async function findMyRoleRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const user = connection._pool._impl._user;
+    const result = await connection.execute(
+      `
+        SELECT *
+        FROM USER_ROLE_PRIVS
+        `
+    );
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
 module.exports = {
   grantSysPermissionRepo,
   grantObjectPermissionRepo,
@@ -317,4 +380,7 @@ module.exports = {
   revokeObjectPermissionRepo,
   findAllSysPermissionRepo,
   findAllObjPermissionRepo,
+  findAllSysPermissionOfRoleRepo,
+  findAllObjPermissionOfRoleRepo,
+  findMyRoleRepo,
 };

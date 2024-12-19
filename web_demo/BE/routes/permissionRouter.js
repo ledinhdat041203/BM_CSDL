@@ -6,7 +6,14 @@ const {
   revokeObjectPermission,
   findAllSysPermission,
   findAllObjPermission,
+  findAllSysPermissionOfRole,
+  findAllObjPermissionOfRole,
+  findMyRole,
 } = require("../business/permissionService");
+const {
+  findAllObjPermissionRepo,
+  findAllObjPermissionOfRoleRepo,
+} = require("../data/permissionRepository");
 
 const router = express.Router();
 
@@ -102,7 +109,7 @@ router.get("/find-all-sys-permission", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "successfully",
-      listPermissioins: result,
+      data: result,
     });
   } catch (err) {
     res.status(500).json({ message: err.message || "Internal server error" });
@@ -123,4 +130,45 @@ router.get("/find-all-obj-permission", async (req, res) => {
   }
 });
 
+router.get("/find-all-sys-permission-of-role", async (req, res) => {
+  try {
+    const result = await findAllSysPermissionOfRole();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all-obj-permission-of-role", async (req, res) => {
+  try {
+    const result = await findAllObjPermissionOfRole();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-my-role", async (req, res) => {
+  try {
+    const result = await findMyRole();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
 module.exports = router;

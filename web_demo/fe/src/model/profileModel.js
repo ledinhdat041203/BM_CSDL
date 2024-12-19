@@ -16,4 +16,4 @@ class Profile {
   }
 }
 
-module.exports = Profile;
+export default Profile;

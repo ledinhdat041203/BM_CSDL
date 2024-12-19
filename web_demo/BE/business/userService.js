@@ -3,6 +3,7 @@ const {
   findAllRepo,
   updateUserRepo,
   deleteUserRepo,
+  findAllTableSpaceRepo,
 } = require("../data/userRepository");
 const { use } = require("../routes/auth");
 
@@ -36,9 +37,29 @@ async function deleteUser(username) {
 async function findAll() {
   try {
     const result = await findAllRepo();
-    return result;
+    const listUsers = result.map((user) => ({
+      USERNAME: user[0],
+      ACCOUNT_STATUS: user[1],
+      LOCK_DATE: user[2],
+      CREATED: user[3],
+      TEMPORARY_TABLESPACE: user[4],
+      DEFAULT_TABLESPACE: user[5],
+      PROFILE: user[6],
+    }));
+    return listUsers;
   } catch (err) {
     throw new Error(err.message || "Error creating user");
+  }
+}
+
+async function findAllTableSpace(username) {
+  try {
+    const result = await findAllTableSpaceRepo(username);
+    const defaultTablespace = result.defaultTablespace.map((space) => space[0]);
+    const tempTablespace = result.tempTablespace.map((space) => space[0]);
+    return { defaultTablespace, tempTablespace };
+  } catch (err) {
+    throw new Error(err.message || "Error delete user");
   }
 }
 
@@ -47,4 +68,5 @@ module.exports = {
   findAll,
   updateUser,
   deleteUser,
+  findAllTableSpace,
 };

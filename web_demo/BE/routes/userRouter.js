@@ -5,6 +5,7 @@ const {
   findAll,
   updateUser,
   deleteUser,
+  findAllTableSpace,
 } = require("../business/userService");
 const User = require("../model/userModel");
 
@@ -103,6 +104,20 @@ router.post("/delete", async (req, res) => {
 router.get("/find-all", async (req, res) => {
   try {
     const result = await findAll();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all-tablespace", async (req, res) => {
+  try {
+    const result = await findAllTableSpace();
 
     res.status(200).json({
       success: true,

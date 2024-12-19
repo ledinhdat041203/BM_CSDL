@@ -115,9 +115,42 @@ async function deleteUserRepo(username) {
   }
 }
 
+async function findAllTableSpaceRepo(username) {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const defaultTablespace = await connection.execute(
+      `
+      SELECT TABLESPACE_NAME
+        FROM managerdb.tablespace_name
+        WHERE CONTENTS = 'PERMANENT'
+      `
+    );
+
+    const tempTablespace = await connection.execute(
+      `
+        SELECT TABLESPACE_NAME
+        FROM managerdb.tablespace_name
+        WHERE CONTENTS = 'TEMPORARY'
+      `
+    );
+
+    return {
+      defaultTablespace: defaultTablespace.rows,
+      tempTablespace: tempTablespace.rows,
+    };
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
 module.exports = {
   createUserRepo,
   findAllRepo,
   updateUserRepo,
   deleteUserRepo,
+  findAllTableSpaceRepo,
 };

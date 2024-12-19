@@ -115,7 +115,9 @@ CREATE OR REPLACE PROCEDURE create_profile_proc (
     p_profile_name  IN VARCHAR2,
     p_session_per_user  IN VARCHAR2,
     p_connect_time  IN VARCHAR2,
-    p_idle_time  IN VARCHAR2
+    p_idle_time  IN VARCHAR2,
+    p_pass_life  IN VARCHAR2,
+    p_fail_login  IN VARCHAR2
 ) AUTHID CURRENT_USER
 IS
     v_sql VARCHAR2(4000);
@@ -124,7 +126,9 @@ BEGIN
         v_sql := 'CREATE PROFILE ' ||  p_profile_name || ' LIMIT ' ||
                 ' SESSIONS_PER_USER ' || p_session_per_user ||
                 ' CONNECT_TIME ' || p_connect_time ||
-                ' IDLE_TIME ' || p_idle_time;
+                ' IDLE_TIME ' || p_idle_time ||
+                ' PASSWORD_LIFE_TIME ' || p_pass_life ||
+                ' FAILED_LOGIN_ATTEMPTS ' || p_fail_login;
         EXECUTE IMMEDIATE v_sql;
 END;
 
@@ -135,7 +139,9 @@ CREATE OR REPLACE PROCEDURE update_profile_proc (
     p_profile_name  IN VARCHAR2,
     p_session_per_user  IN VARCHAR2,
     p_connect_time  IN VARCHAR2,
-    p_idle_time  IN VARCHAR2
+    p_idle_time  IN VARCHAR2,
+    p_pass_life  IN VARCHAR2,
+    p_fail_login  IN VARCHAR2
 ) AUTHID CURRENT_USER
 IS
     v_sql VARCHAR2(4000);
@@ -144,7 +150,9 @@ BEGIN
         v_sql := 'ALTER PROFILE ' ||  p_profile_name || ' LIMIT ' ||
                 ' SESSIONS_PER_USER ' || p_session_per_user ||
                 ' CONNECT_TIME ' || p_connect_time ||
-                ' IDLE_TIME ' || p_idle_time;
+                ' IDLE_TIME ' || p_idle_time ||
+                ' PASSWORD_LIFE_TIME ' || p_pass_life ||
+                ' FAILED_LOGIN_ATTEMPTS ' || p_fail_login;
         EXECUTE IMMEDIATE v_sql;
 END;
 
@@ -191,7 +199,11 @@ CREATE OR REPLACE PROCEDURE update_role_proc (
 IS
     v_sql VARCHAR2(4000);
 BEGIN
-        v_sql := 'ALTER ROLE ' ||  p_role_name || ' IDENTIFIED BY ' || p_pass;
+        IF p_pass IS NOT NULL THEN
+            v_sql := 'ALTER ROLE ' ||  p_role_name || ' IDENTIFIED BY ' || p_pass;
+        ELSE
+            v_sql := 'ALTER ROLE ' ||  p_role_name || ' NOT IDENTIFIED';
+        END IF;
         EXECUTE IMMEDIATE v_sql;
 END;
 
@@ -363,7 +375,7 @@ BEGIN
         SELECT COUNT(*)
         INTO v_check
         FROM ALL_TAB_PRIVS
-        WHERE TABLE_NAME = 'DBA_TAB_PRIVS'
+        WHERE TABLE_NAME = 'DBA_ROLE_PRIVS'
           AND PRIVILEGE = 'SELECT'
           AND UPPER(GRANTEE) = UPPER(p_name);
         v_check_per := (v_check > 0);
@@ -375,15 +387,15 @@ BEGIN
     END;
 
     IF v_check_per THEN
-        v_sql := 'SELECT * FROM DBA_TAB_PRIVS';
+        v_sql := 'SELECT * FROM DBA_ROLE_PRIVS';
     ELSE
-        v_sql := 'SELECT * FROM USER_TAB_PRIVS';
+        v_sql := 'SELECT * FROM USER_ROLE_PRIVS';
     END IF;
 
     OPEN v_cursor FOR v_sql;
     RETURN v_cursor;
 END;
 
-GRANT EXECUTE ON select_obj_permissions_func TO PUBLIC;
+GRANT EXECUTE ON select_role_func TO PUBLIC;
 
 

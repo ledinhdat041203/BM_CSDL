@@ -31,20 +31,35 @@ async function updateRoleRepo(role) {
 
   try {
     connection = await getPool().getConnection();
-    const result = await connection.execute(
-      `BEGIN
+    if (role.pass) {
+      const result = await connection.execute(
+        `BEGIN
       managerdb.update_role_proc(
         p_role_name => :roleName,
         p_pass => :pass
       );
     END;`,
-      {
-        roleName: role.roleName,
-        pass: role.pass,
-      }
-    );
+        {
+          roleName: role.roleName,
+          pass: role.pass,
+        }
+      );
 
-    return result;
+      return result;
+    } else {
+      const result = await connection.execute(
+        `BEGIN
+      managerdb.update_role_proc(
+        p_role_name => :roleName
+      );
+    END;`,
+        {
+          roleName: role.roleName,
+        }
+      );
+
+      return result;
+    }
   } catch (err) {
     throw new Error(err.message);
   } finally {
@@ -83,14 +98,7 @@ async function findAllRoleRepo() {
         FROM DBA_ROLES "
     );
 
-    const rows = result.rows;
-    const listRole = rows.map((role) => ({
-      ROLE: role[0],
-      ROLE_ID: role[1],
-      PASSWORD_REQUIRED: role[2],
-      AUTHENCATION_TYPE: role[3],
-    }));
-    return listRole;
+    return result.rows;
   } catch (err) {
     throw new Error(err.message);
   } finally {
@@ -98,9 +106,54 @@ async function findAllRoleRepo() {
   }
 }
 
+async function findAllRoleAndUserRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const result = await connection.execute(
+      "SELECT * \
+        FROM DBA_ROLE_PRIVS "
+    );
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+async function findAllRoleNameRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const result = await connection.execute(
+      `SELECT GRANTED_ROLE
+        FROM USER_ROLE_PRIVS
+        WHERE GRANTED_ROLE NOT IN (
+          'CONNECT',
+          'RESOURCE',
+          'DBA',
+          'EXP_FULL_DATABASE',
+          'IMP_FULL_DATABASE',
+          'LBAC_DBA',
+          'ABSC'
+        )
+        ORDER BY GRANTED_ROLE`
+    );
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
 module.exports = {
   createRoleRepo,
   updateRoleRepo,
   deleteRoleRepo,
   findAllRoleRepo,
+  findAllRoleNameRepo,
+  findAllRoleAndUserRepo,
 };

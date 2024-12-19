@@ -22,19 +22,20 @@ import { findAllProfileName } from "../API/profileApi";
 import { findAllRoleName } from "../API/roleApi";
 import { findAllTableSpace } from "../API/userApi copy";
 
-const UserFormDialog = ({
+const ProfileFormDialog = ({
   dialogOpen,
   handleClose,
   isEditing,
   activeStep,
   setActiveStep,
-  userForm,
-  setUserForm,
+  profileForm,
+  setProfileForm,
   handleNext,
   handleBack,
   handleSave,
+  
 }) => {
-  const steps = ["User Info", "Account info", "Profile & Role"];
+  const steps = ["New profile", "General", "Password"];
   const [defaultTablespaces, setDefaultTablespaces] = useState([]);
   const [tempTablespaces, setTempTablespaces] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -75,148 +76,130 @@ const UserFormDialog = ({
           <Box sx={{ mt: 2 }}>
             <TextField
               fullWidth
-              label="User ID"
-              value={userForm.userId}
+              label="Profile Name"
+              value={profileForm.profileName}
               onChange={(e) =>
-                setUserForm({ ...userForm, userId: e.target.value })
+                setProfileForm({ ...profileForm, profileName: e.target.value })
               }
               sx={{ mb: 2 }}
-            />
-
-            <TextField
-              fullWidth
-              label="Full Name"
-              value={userForm.fullName}
-              onChange={(e) =>
-                setUserForm({ ...userForm, fullName: e.target.value })
-              }
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Phone Number"
-              value={userForm.phone}
-              onChange={(e) =>
-                setUserForm({ ...userForm, phone: e.target.value })
-              }
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Email"
-              value={userForm.email}
-              onChange={(e) =>
-                setUserForm({ ...userForm, email: e.target.value })
-              }
             />
           </Box>
         );
       case 1:
         return (
           <Box sx={{ mt: 2 }}>
-            {/* Nhập User Name */}
-            <TextField
-              fullWidth
-              label="User Name"
-              value={userForm.userName}
-              onChange={(e) =>
-                setUserForm({ ...userForm, userName: e.target.value })
-              }
-              sx={{ mb: 2 }}
-            />
-
-            {/* Nhập Password */}
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              value={userForm.pass}
-              onChange={(e) =>
-                setUserForm({ ...userForm, pass: e.target.value })
-              }
-              sx={{ mb: 2 }}
-            />
-
-            {/* Nhập Quota */}
-            <TextField
-              fullWidth
-              label="Quota (MB)"
-              type="number"
-              value={userForm.quota}
-              onChange={(e) =>
-                setUserForm({ ...userForm, quota: e.target.value })
-              }
-              sx={{ mb: 2 }}
-            />
-
-            {/* Default Tablespace */}
             <Autocomplete
-              options={defaultTablespaces} // Danh sách lấy từ API
-              value={userForm.defaultTablespace}
+              freeSolo
+              options={["UNLIMITED", "DEFAULT"]}
+              value={profileForm.sessionPerUser}
               onChange={(event, newValue) =>
-                setUserForm({ ...userForm, defaultTablespace: newValue })
+                setProfileForm({ ...profileForm, sessionPerUser: newValue })
               }
               renderInput={(params) => (
-                <TextField {...params} label="Default Tablespace" fullWidth />
-              )}
-              sx={{ mb: 2 }}
-            />
-
-            {/* Temporary Tablespace */}
-            <Autocomplete
-              options={tempTablespaces} // Danh sách lấy từ API
-              value={userForm.tempTablespace}
-              onChange={(event, newValue) =>
-                setUserForm({ ...userForm, tempTablespace: newValue })
-              }
-              renderInput={(params) => (
-                <TextField {...params} label="Temporary Tablespace" fullWidth />
-              )}
-              sx={{ mb: 2 }}
-            />
-            {/* Account Status */}
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={userForm.accountStatus === "Active"}
+                <TextField
+                  {...params}
+                  label="Session per user"
                   onChange={(e) =>
-                    setUserForm({
-                      ...userForm,
-                      accountStatus: e.target.checked ? "Active" : "Inactive",
+                    setProfileForm({
+                      ...profileForm,
+                      sessionPerUser: e.target.value,
                     })
                   }
+                  sx={{ mb: 2 }}
                 />
+              )}
+            />
+
+            <Autocomplete
+              freeSolo
+              options={["UNLIMITED", "DEFAULT"]}
+              value={profileForm.connectTime}
+              onChange={(event, newValue) =>
+                setProfileForm({ ...profileForm, connectTime: newValue })
               }
-              label="Account Active"
-              sx={{ mb: 2 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Connect Time"
+                  type="text"
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      connectTime: e.target.value,
+                    })
+                  }
+                  sx={{ mb: 2 }}
+                />
+              )}
+            />
+
+            <Autocomplete
+              freeSolo
+              options={["UNLIMITED", "DEFAULT"]}
+              value={profileForm.idleTime}
+              onChange={(event, newValue) =>
+                setProfileForm({ ...profileForm, idleTime: newValue })
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Idle Time"
+                  type="text"
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      idleTime: e.target.value,
+                    })
+                  }
+                  sx={{ mb: 2 }}
+                />
+              )}
             />
           </Box>
         );
       case 2:
         return (
           <Box sx={{ mt: 2 }}>
-            {/* Select Profile */}
             <Autocomplete
-              options={profiles}
-              value={userForm.profile}
+              freeSolo
+              options={["UNLIMITED", "DEFAULT"]}
+              value={profileForm.passLife}
               onChange={(event, newValue) =>
-                setUserForm({ ...userForm, profile: newValue })
+                setProfileForm({ ...profileForm, sessionPerUser: newValue })
               }
               renderInput={(params) => (
-                <TextField {...params} label="Profile" fullWidth />
+                <TextField
+                  {...params}
+                  label="Password life time"
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      passLife: e.target.value,
+                    })
+                  }
+                  sx={{ mb: 2 }}
+                />
               )}
-              sx={{ mb: 2 }}
             />
-
-            {/* Select Role */}
             <Autocomplete
-              options={roles} // Danh sách lấy từ API
-              value={userForm.role}
+              freeSolo
+              options={["UNLIMITED", "DEFAULT"]}
+              value={profileForm.failLogin}
               onChange={(event, newValue) =>
-                setUserForm({ ...userForm, role: newValue })
+                setProfileForm({ ...profileForm, sessionPerUser: newValue })
               }
               renderInput={(params) => (
-                <TextField {...params} label="Role" fullWidth />
+                <TextField
+                  {...params}
+                  label="Fail login attempts"
+                  onChange={(e) =>
+                    setProfileForm({
+                      ...profileForm,
+                      failLogin: e.target.value,
+                    })
+                  }
+                  sx={{ mb: 2 }}
+                />
               )}
             />
           </Box>
@@ -236,7 +219,9 @@ const UserFormDialog = ({
 
   return (
     <Dialog open={dialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{isEditing ? "Edit User" : "Add New User"}</DialogTitle>
+      <DialogTitle>
+        {isEditing ? "Edit Profile" : "Add New Profile"}
+      </DialogTitle>
       <DialogContent>
         <Stepper activeStep={activeStep} sx={{ mt: 2, mb: 4 }}>
           {steps.map((label) => (
@@ -266,4 +251,4 @@ const UserFormDialog = ({
   );
 };
 
-export default UserFormDialog;
+export default ProfileFormDialog;

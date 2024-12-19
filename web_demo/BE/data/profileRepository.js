@@ -11,7 +11,9 @@ async function createProfileRepo(profile) {
         p_profile_name => :profileName,
         p_session_per_user => :sessionPerUser,
         p_connect_time => :connectTime,
-        p_idle_time => :idleTime
+        p_idle_time => :idleTime,
+        p_pass_life => :passLife,
+        p_fail_login => :failLogin
       );
     END;`,
       {
@@ -19,6 +21,8 @@ async function createProfileRepo(profile) {
         sessionPerUser: profile.sessionPerUser,
         connectTime: profile.connectTime,
         idleTime: profile.idleTime,
+        passLife: profile.passLife,
+        failLogin: profile.failLogin,
       }
     );
 
@@ -41,7 +45,9 @@ async function updateProfileRepo(profile) {
         p_profile_name => :profileName,
         p_session_per_user => :sessionPerUser,
         p_connect_time => :connectTime,
-        p_idle_time => :idleTime
+        p_idle_time => :idleTime,
+        p_pass_life => :passLife,
+        p_fail_login => :failLogin
       );
     END;`,
       {
@@ -49,6 +55,8 @@ async function updateProfileRepo(profile) {
         sessionPerUser: profile.sessionPerUser,
         connectTime: profile.connectTime,
         idleTime: profile.idleTime,
+        passLife: profile.passLife,
+        failLogin: profile.failLogin,
       }
     );
 
@@ -89,7 +97,7 @@ async function findAllProfileNameRepo() {
     connection = await getPool().getConnection();
     const result = await connection.execute(
       "SELECT DISTINCT PROFILE \
-        FROM DBA_PROFILES "
+        FROM managerdb.profile_name "
     );
 
     return result.rows;
