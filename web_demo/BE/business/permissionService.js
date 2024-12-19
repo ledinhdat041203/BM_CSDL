@@ -6,6 +6,9 @@ const {
   revokeObjectPermissionRepo,
   findAllSysPermissionRepo,
   findAllObjPermissionRepo,
+  findAllSysPermissionOfRoleRepo,
+  findAllObjPermissionOfRoleRepo,
+  findMyRoleRepo,
 } = require("../data/permissionRepository");
 
 async function grantSysPermission(name, permissions, grantOption) {
@@ -67,6 +70,50 @@ async function findAllObjPermission() {
   }
 }
 
+async function findAllSysPermissionOfRole() {
+  try {
+    const result = await findAllSysPermissionOfRoleRepo();
+    const listRole = result.map((role) => ({
+      ROLE: role[0],
+      PRIVILEGE: role[1],
+      ADMIN_OPTION: role[2],
+    }));
+    return listRole;
+  } catch (err) {
+    throw new Error(err.message || "Error update user");
+  }
+}
+
+async function findAllObjPermissionOfRole() {
+  try {
+    const result = await findAllObjPermissionOfRoleRepo();
+    const listRole = result.map((role) => ({
+      ROLE: role[0],
+      OWNER: role[1],
+      TABLE_NAME: role[2],
+      PRIVILEGE: role[4],
+      GRANTABLE: role[5],
+    }));
+    return listRole;
+  } catch (err) {
+    throw new Error(err.message || "Error update user");
+  }
+}
+
+async function findMyRole() {
+  try {
+    const result = await findMyRoleRepo();
+    const listRole = result.map((role) => ({
+      USERNAME: role[0],
+      GRANTED_ROLE: role[1],
+      ADMIN_OPTION: role[2],
+    }));
+    return listRole;
+  } catch (err) {
+    throw new Error(err.message || "Error update user");
+  }
+}
+
 module.exports = {
   grantSysPermission,
   grantObjectPermission,
@@ -74,4 +121,7 @@ module.exports = {
   revokeObjectPermission,
   findAllSysPermission,
   findAllObjPermission,
+  findAllSysPermissionOfRole,
+  findAllObjPermissionOfRole,
+  findMyRole,
 };

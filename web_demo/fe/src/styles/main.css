@@ -1,11 +1,13 @@
 .main {
   flex-grow: 1;
-  padding: 16px;
+  padding-top: 16px;
   transition: margin 225ms cubic-bezier(0.4, 0, 0.2, 1);
-  margin-left: -240px; /* drawerWidth */
+  margin-left: -240px;
+  width: calc(100% - 240px);
 }
 
 .main.open {
   transition: margin 195ms cubic-bezier(0.4, 0, 0.6, 1);
   margin-left: 0;
+  width: 100%;
 }

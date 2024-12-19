@@ -3,6 +3,8 @@ const {
   updateRoleRepo,
   deleteRoleRepo,
   findAllRoleRepo,
+  findAllRoleNameRepo,
+  findAllRoleAndUserRepo,
 } = require("../data/roleRepository");
 
 async function createRole(role) {
@@ -35,10 +37,48 @@ async function deleteRole(roleName) {
 async function findAllRole() {
   try {
     const result = await findAllRoleRepo();
+
+    const listRole = result.map((role) => ({
+      ROLE: role[0],
+      ROLE_ID: role[1],
+      PASSWORD_REQUIRED: role[2],
+      AUTHENCATION_TYPE: role[3],
+    }));
+    return listRole;
+  } catch (err) {
+    throw new Error(err.message || "Error delete user");
+  }
+}
+
+async function findAllRoleAndUser() {
+  try {
+    const result = await findAllRoleAndUserRepo();
+
+    const listRole = result.map((role) => ({
+      GRANTEE: role[0],
+      GRANTED_ROLE: role[1],
+      ADMIN_OPTION: role[2],
+    }));
+    return listRole;
+  } catch (err) {
+    throw new Error(err.message || "Error delete user");
+  }
+}
+
+async function findAllRoleName() {
+  try {
+    const result = await findAllRoleNameRepo();
     return result;
   } catch (err) {
     throw new Error(err.message || "Error delete user");
   }
 }
 
-module.exports = { createRole, updateRole, deleteRole, findAllRole };
+module.exports = {
+  createRole,
+  updateRole,
+  deleteRole,
+  findAllRole,
+  findAllRoleName,
+  findAllRoleAndUser,
+};
