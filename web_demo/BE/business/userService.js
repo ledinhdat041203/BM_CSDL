@@ -4,11 +4,16 @@ const {
   updateUserRepo,
   deleteUserRepo,
   findAllTableSpaceRepo,
+  findAllUserNameRepo,
+  findAllUserInfoRepo,
 } = require("../data/userRepository");
 const { use } = require("../routes/auth");
 
 async function createUser(user) {
   try {
+    user.quota = user.quota + "M";
+    user.role = user.role[0];
+    console.log("user serviec", user);
     const result = await createUserRepo(user);
     return result;
   } catch (err) {
@@ -18,6 +23,9 @@ async function createUser(user) {
 
 async function updateUser(user) {
   try {
+    user.quota = user.quota + "M";
+    // user.role = user.role[0];
+    console.log("user serviec", user);
     const result = await updateUserRepo(user);
     return result;
   } catch (err) {
@@ -63,10 +71,38 @@ async function findAllTableSpace(username) {
   }
 }
 
+async function findAllUserName() {
+  try {
+    const result = await findAllUserNameRepo();
+    const listUsersName = result.map((user) => user[0]);
+    return listUsersName;
+  } catch (err) {
+    throw new Error(err.message || "Error creating user");
+  }
+}
+
+async function findAllUserInfo() {
+  try {
+    const result = await findAllUserInfoRepo();
+    const listUsers = result.map((user) => ({
+      userId: user[0],
+      userName: user[1],
+      fullName: user[2],
+      email: user[3],
+      phoneNumber: user[4],
+    }));
+    return listUsers;
+  } catch (err) {
+    throw new Error(err.message || "Error creating user");
+  }
+}
+
 module.exports = {
   createUser,
   findAll,
   updateUser,
   deleteUser,
   findAllTableSpace,
+  findAllUserName,
+  findAllUserInfo,
 };

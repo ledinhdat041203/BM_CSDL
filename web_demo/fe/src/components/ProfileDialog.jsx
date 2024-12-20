@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { findAllProfileName } from "../API/profileApi";
 import { findAllRoleName } from "../API/roleApi";
-import { findAllTableSpace } from "../API/userApi copy";
+import { findAllTableSpace } from "../API/userApi";
 
 const ProfileFormDialog = ({
   dialogOpen,
@@ -33,7 +33,6 @@ const ProfileFormDialog = ({
   handleNext,
   handleBack,
   handleSave,
-  
 }) => {
   const steps = ["New profile", "General", "Password"];
   const [defaultTablespaces, setDefaultTablespaces] = useState([]);

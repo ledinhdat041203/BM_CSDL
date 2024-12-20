@@ -16,8 +16,15 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { FaUserPlus, FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { findAllUser } from "../API/userApi copy";
+import {
+  createUserAPI,
+  deleteUserAPI,
+  findAllUser,
+  findAllUserInfoAPI,
+  updateUserAPI,
+} from "../API/userApi";
 import UserFormDialog from "./UserDialog";
+import { toast } from "react-toastify";
 
 const UserManagement = ({}) => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -26,95 +33,55 @@ const UserManagement = ({}) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [userForm, setUserForm] = useState({
-    userId: "",
-    fullName: "",
-    phone: "",
-    email: "",
-    userName: "",
-    pass: "",
+    username: "",
+    password: "",
+    defaultTablespace: "",
+    tempTablespace: "",
     quota: "",
     profile: "",
     role: "",
-    status: "",
+    accountStatus: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [users, setUsers] = useState([]);
-
-  const mockUsers = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@oracle.com",
-      status: "Active",
-      avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d",
-      department: "Engineering",
-      role: "Developer",
-      systemAccess: "Full",
-      lastLogin: "2023-10-15",
-      deviceType: "Desktop",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@oracle.com",
-      status: "Inactive",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      department: "Marketing",
-      role: "Manager",
-      systemAccess: "Limited",
-      lastLogin: "2023-10-14",
-      deviceType: "Mobile",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      email: "mike@oracle.com",
-      status: "Active",
-      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36",
-      department: "Sales",
-      role: "Executive",
-      systemAccess: "Full",
-      lastLogin: "2023-10-13",
-      deviceType: "Laptop",
-    },
-    {
-      id: 4,
-      name: "Sarah Wilson",
-      email: "sarah@oracle.com",
-      status: "Active",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-      department: "HR",
-      role: "Admin",
-      systemAccess: "Full",
-      lastLogin: "2023-10-12",
-      deviceType: "Desktop",
-    },
-  ];
+  const [usersInfo, setUsersInfo] = useState([]);
 
   const userInfoColumns = [
+    { field: "userId", headerName: "userId", width: 100 },
+    { field: "userName", headerName: "usserName", width: 150 },
+    { field: "fullName", headerName: "fullName", width: 150 },
+    { field: "email", headerName: "email", width: 200 },
+    { field: "phoneNumber", headerName: "phoneNumber", width: 150 },
     {
-      field: "avatar",
-      headerName: "Avatar",
-      width: 100,
+      field: "ACTION",
+      headerName: "ACTION",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
       renderCell: (params) => (
-        <Avatar
-          src={params.value}
-          alt={params.row.name}
-          sx={{ width: 40, height: 40 }}
-        />
-      ),
-    },
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "email", headerName: "Email", width: 250 },
-    { field: "status", headerName: "Status", width: 150 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 120,
-      renderCell: (params) => (
-        <IconButton onClick={() => handleEdit(params.row)}>
-          <FaEdit />
-        </IconButton>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 1,
+            width: "%",
+          }}
+        >
+          <IconButton
+            onClick={() => handleEdit(params.row)}
+            sx={{ color: "#1976D2" }}
+          >
+            <FaEdit />
+          </IconButton>
+
+          <IconButton
+            onClick={() => handleDelete(params.row)}
+            sx={{ color: "#F44336" }}
+          >
+            <RiDeleteBin6Line />
+          </IconButton>
+        </Box>
       ),
     },
   ];
@@ -172,10 +139,23 @@ const UserManagement = ({}) => {
   const renderUserInfo = () => {
     return (
       <DataGrid
-        rows={mockUsers}
+        rows={usersInfo}
+        getRowId={(row) => row.userId}
         columns={userInfoColumns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        pageSizeOptions={[10]}
+        slots={{ toolbar: GridToolbar }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+        }}
         checkboxSelection
         disableSelectionOnClick
       />
@@ -316,25 +296,34 @@ const UserManagement = ({}) => {
   };
 
   const handleDelete = (selectedProfile) => {
-    console.log("delete");
+    console.log("delete", selectedProfile.USERNAME);
+    deleteUser(selectedProfile.USERNAME);
   };
 
   const handleEdit = (user) => {
     setIsEditing(true);
-    setUserForm(user);
+    setUserForm({
+      username: user.USERNAME,
+      defaultTablespace: user.DEFAULT_TABLESPACE,
+      tempTablespace: user.TEMPORARY_TABLESPACE,
+      accountStatus: user.ACCOUNT_STATUS == "OPEN" ? "UNLOCK" : "LOCK",
+      profile: user.PROFILE,
+      quota: 5,
+    });
     setDialogOpen(true);
   };
 
   const handleAddUser = () => {
     setIsEditing(false);
     setUserForm({
-      name: "",
-      email: "",
-      department: "",
+      username: "",
+      password: "",
+      defaultTablespace: "",
+      tempTablespace: "",
+      quota: "50",
+      profile: "",
       role: "",
-      status: "",
-      systemAccess: "",
-      deviceType: "",
+      accountStatus: "LOCK",
     });
     setDialogOpen(true);
   };
@@ -352,8 +341,15 @@ const UserManagement = ({}) => {
     setActiveStep(0);
   };
 
-  const handleSave = () => {
-    console.log("Saved User:", userForm);
+  const handleSave = async () => {
+    console.log("Saved user:", userForm);
+
+    if (isEditing) {
+      await updateUser();
+    } else {
+      await createUser();
+    }
+    fetchUses();
     handleClose();
   };
 
@@ -368,11 +364,75 @@ const UserManagement = ({}) => {
     }
   };
 
-  useEffect(() => {
-    if (selectedTab === 1) {
-      fetchUses();
+  const fetchUsesInfo = async () => {
+    try {
+      const response = await findAllUserInfoAPI();
+      setUsersInfo(response.data);
+    } catch (error) {
+      console.error("Failed to fetch roles:", error);
     }
-  }, [selectedTab]);
+  };
+
+  const deleteUser = async (userName) => {
+    let response;
+    try {
+      response = await deleteUserAPI(userName);
+      console.log("response", response);
+
+      setUsers((prevUser) =>
+        prevUser.filter((user) => user.USERNAME !== userName)
+      );
+
+      toast.success(response?.message, {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log("err:", error);
+      toast.error(error?.response?.data?.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  const createUser = async () => {
+    let response;
+    try {
+      console.log("user info::", userForm);
+      response = await createUserAPI(userForm);
+
+      toast.success(response.message, {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log("err:", error);
+      toast.error(error?.response.data.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  const updateUser = async () => {
+    let response;
+    try {
+      console.log("user info::", userForm);
+      response = await updateUserAPI(userForm);
+
+      toast.success(response.message, {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log("err:", error);
+      toast.error(error?.response.data.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchUses();
+    fetchUsesInfo();
+  }, []);
+
   return (
     <Box>
       <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
@@ -398,35 +458,6 @@ const UserManagement = ({}) => {
       >
         {selectedTab === 0 ? renderUserInfo() : renderSystemInfo()}
       </Paper>
-
-      {/* <Dialog open={dialogOpen} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{isEditing ? "Edit User" : "Add New User"}</DialogTitle>
-        <DialogContent>
-          <Stepper activeStep={activeStep} sx={{ mt: 2, mb: 4 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          {renderStepContent(activeStep)}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button disabled={activeStep === 0} onClick={handleBack}>
-            Back
-          </Button>
-          {activeStep === steps.length - 1 ? (
-            <Button onClick={handleSave} variant="contained">
-              Save
-            </Button>
-          ) : (
-            <Button onClick={handleNext} variant="contained">
-              Next
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog> */}
 
       <UserFormDialog
         dialogOpen={dialogOpen}

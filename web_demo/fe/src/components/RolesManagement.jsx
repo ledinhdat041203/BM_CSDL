@@ -12,6 +12,7 @@ import { FaEdit, FaUserPlus } from "react-icons/fa";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   createRoleAPI,
+  deleteRoleAPI,
   findAllRole,
   findAllRoleAndUser,
   updateRoleAPI,
@@ -163,10 +164,10 @@ function RolesManagement() {
   const RoleObjPrivisColumns = [
     { field: "id", headerName: "id", width: 20 },
     { field: "ROLE", headerName: "ROLE", width: 200 },
-    { field: "OWNER", headerName: "OWNER", width: 200 },
-    { field: "TABLE_NAME", headerName: "TABLE_NAME", width: 300 },
-    { field: "PRIVILEGE", headerName: "PRIVILEGE", width: 300 },
-    { field: "GRANTABLE", headerName: "GRANTABLE", width: 300 },
+    { field: "OWNER", headerName: "OWNER", width: 100 },
+    { field: "TABLE_NAME", headerName: "TABLE_NAME", width: 250 },
+    { field: "PRIVILEGE", headerName: "PRIVILEGE", width: 150 },
+    { field: "GRANTABLE", headerName: "GRANTABLE", width: 140 },
     {
       field: "ACTION",
       headerName: "ACTION",
@@ -245,7 +246,13 @@ function RolesManagement() {
     setRoleForm({ roleName: role.ROLE, password: null });
     setDialogOpen(true);
   };
-  const handleDelete = () => {};
+
+  const handleDelete = (selectedRole) => {
+    console.log("delete", selectedRole.ROLE);
+    if (selectedTab === 0) deleteRole(selectedRole.ROLE);
+    else if (selectedTab === 4) deleteRole(selectedRole.GRANTED_ROLE);
+  };
+
   const handleAddRole = () => {
     console.log("add role");
     setIsEditing(false);
@@ -532,6 +539,31 @@ function RolesManagement() {
     } catch (error) {
       console.log("err:", error);
       toast.error(error?.response.data.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  const deleteRole = async (roleName) => {
+    let response;
+    try {
+      response = await deleteRoleAPI(roleName);
+      console.log("response", response);
+
+      setRoles((prevRoles) =>
+        prevRoles.filter((role) => role.ROLE !== roleName)
+      );
+
+      setMyRoles((prevRoles) =>
+        prevRoles.filter((role) => role.GRANTED_ROLE !== roleName)
+      );
+
+      toast.success(response?.message, {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log("err:", error);
+      toast.error(error?.response?.data?.message, {
         position: "top-right",
       });
     }

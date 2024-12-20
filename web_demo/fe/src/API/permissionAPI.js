@@ -21,8 +21,30 @@ const findMyRoleAPI = async () => {
   return response.data;
 };
 
+const grantSysPermissionAPI = async (data) => {
+  const response = await axiosInstance.post(
+    "/permission/grant-sys-permission",
+    {
+      ...data,
+    }
+  );
+  return response.data;
+};
+
+const grantObjPermissionAPI = async (data) => {
+  const response = await axiosInstance.post(
+    "/permission/grant-obj-permission",
+    {
+      ...data,
+    }
+  );
+  return response.data;
+};
+
 export {
   findAllSysPermissionOfRoleAPI,
   findAllObjPermissionOfRoleAPI,
   findMyRoleAPI,
+  grantSysPermissionAPI,
+  grantObjPermissionAPI,
 };

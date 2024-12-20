@@ -7,12 +7,15 @@ const {
   findAllRole,
   findAllRoleName,
   findAllRoleAndUser,
+  findRoleName,
 } = require("../business/roleService");
 const router = express.Router();
 
 router.post("/create", async (req, res) => {
   try {
-    const { roleName, pass } = req.body;
+    const { roleName, password } = req.body;
+
+    console.log("rolesss:::", req.body);
 
     if (!roleName) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -20,7 +23,7 @@ router.post("/create", async (req, res) => {
 
     const role = new Role({
       roleName,
-      pass,
+      pass: password,
     });
 
     const result = await createRole(role);
@@ -108,6 +111,20 @@ router.get("/find-all-role-user", async (req, res) => {
 router.get("/find-all-name", async (req, res) => {
   try {
     const result = await findAllRoleName();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-role-name", async (req, res) => {
+  try {
+    const result = await findRoleName();
 
     res.status(200).json({
       success: true,

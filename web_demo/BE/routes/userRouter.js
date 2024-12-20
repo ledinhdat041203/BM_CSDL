@@ -6,6 +6,8 @@ const {
   updateUser,
   deleteUser,
   findAllTableSpace,
+  findAllUserName,
+  findAllUserInfo,
 } = require("../business/userService");
 const User = require("../model/userModel");
 
@@ -118,6 +120,34 @@ router.get("/find-all", async (req, res) => {
 router.get("/find-all-tablespace", async (req, res) => {
   try {
     const result = await findAllTableSpace();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all-user-name", async (req, res) => {
+  try {
+    const result = await findAllUserName();
+
+    res.status(200).json({
+      success: true,
+      message: "successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message || "Internal server error" });
+  }
+});
+
+router.get("/find-all-user-info", async (req, res) => {
+  try {
+    const result = await findAllUserInfo();
 
     res.status(200).json({
       success: true,

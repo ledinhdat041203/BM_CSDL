@@ -1,6 +1,7 @@
 const { closeConnection, getPool } = require("./dbconect");
 
 async function createRoleRepo(role) {
+  // console.log(role);
   let connection = null;
 
   try {
@@ -149,6 +150,22 @@ async function findAllRoleNameRepo() {
     closeConnection(connection);
   }
 }
+
+async function findRoleNameRepo() {
+  let connection = null;
+
+  try {
+    connection = await getPool().getConnection();
+    const result = await connection.execute(
+      `SELECT * FROM managerdb.role_name`
+    );
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
 module.exports = {
   createRoleRepo,
   updateRoleRepo,
@@ -156,4 +173,5 @@ module.exports = {
   findAllRoleRepo,
   findAllRoleNameRepo,
   findAllRoleAndUserRepo,
+  findRoleNameRepo,
 };

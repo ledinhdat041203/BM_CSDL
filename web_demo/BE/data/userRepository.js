@@ -70,8 +70,7 @@ async function updateUserRepo(user) {
           p_temp_tablespace => :tempTablespace,
           p_quota => :quota,
           p_status => :accountStatus,
-          p_profile => :profile,
-          p_role => :role
+          p_profile => :profile
         );
       END;`,
       {
@@ -81,7 +80,6 @@ async function updateUserRepo(user) {
         quota: user.quota,
         accountStatus: user.accountStatus,
         profile: user.profile,
-        role: user.role,
       }
     );
 
@@ -147,10 +145,46 @@ async function findAllTableSpaceRepo(username) {
   }
 }
 
+async function findAllUserNameRepo() {
+  let connection = null;
+  try {
+    const pool = getPool();
+    connection = await pool.getConnection();
+
+    const result = await connection.execute("SELECT USERNAME FROM ALL_USERS");
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
+async function findAllUserInfoRepo() {
+  let connection = null;
+  try {
+    const pool = getPool();
+    connection = await pool.getConnection();
+
+    const result = await connection.execute(
+      "SELECT * FROM MANAGERDB.USER_INFO"
+    );
+
+    return result.rows;
+  } catch (err) {
+    throw new Error(err.message);
+  } finally {
+    closeConnection(connection);
+  }
+}
+
 module.exports = {
   createUserRepo,
   findAllRepo,
   updateUserRepo,
   deleteUserRepo,
   findAllTableSpaceRepo,
+  findAllUserNameRepo,
+  findAllUserInfoRepo,
 };

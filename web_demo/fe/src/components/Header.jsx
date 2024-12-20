@@ -9,6 +9,8 @@ const Header = ({ open, drawerWidth, handleDrawerToggle }) => {
       sx={{
         width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
         ml: open ? `${drawerWidth}px` : 0,
+        marginBottom: "16px",
+        // marginTop: "16px",
       }}
     >
       <Toolbar>
