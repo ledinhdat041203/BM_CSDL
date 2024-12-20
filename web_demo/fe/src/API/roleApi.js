@@ -16,7 +16,10 @@ const findAllRoleName = async () => {
 };
 
 const createRoleAPI = async (role) => {
-  const response = await axiosInstance.post("/role/create", { ...role });
+  console.log("role:::", role);
+  const response = await axiosInstance.post("/role/create", {
+    ...role,
+  });
   return response.data;
 };
 
@@ -31,10 +34,28 @@ const updateRoleAPI = async (role) => {
   return response.data;
 };
 
+const deleteRoleAPI = async (roleName) => {
+  const response = await axiosInstance.post(
+    "/role/delete",
+    {},
+    {
+      params: { roleName },
+    }
+  );
+  return response.data;
+};
+
+const findRoleNameAPI = async () => {
+  const response = await axiosInstance.get("/role/find-role-name", {});
+  return response.data;
+};
+
 export {
   findAllRole,
   findAllRoleName,
   findAllRoleAndUser,
   createRoleAPI,
   updateRoleAPI,
+  deleteRoleAPI,
+  findRoleNameAPI,
 };

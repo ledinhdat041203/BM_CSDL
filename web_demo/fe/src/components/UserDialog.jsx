@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { findAllProfileName } from "../API/profileApi";
 import { findAllRoleName } from "../API/roleApi";
-import { findAllTableSpace } from "../API/userApi copy";
+import { findAllTableSpace } from "../API/userApi";
 
 const UserFormDialog = ({
   dialogOpen,
@@ -34,7 +34,7 @@ const UserFormDialog = ({
   handleBack,
   handleSave,
 }) => {
-  const steps = ["User Info", "Account info", "Profile & Role"];
+  const steps = ["Account info", "Profile & Role"];
   const [defaultTablespaces, setDefaultTablespaces] = useState([]);
   const [tempTablespaces, setTempTablespaces] = useState([]);
   const [profiles, setProfiles] = useState([]);
@@ -70,7 +70,7 @@ const UserFormDialog = ({
 
   const renderStepContent = (step) => {
     switch (step) {
-      case 0:
+      case 99:
         return (
           <Box sx={{ mt: 2 }}>
             <TextField
@@ -111,16 +111,16 @@ const UserFormDialog = ({
             />
           </Box>
         );
-      case 1:
+      case 0:
         return (
           <Box sx={{ mt: 2 }}>
             {/* Nhập User Name */}
             <TextField
               fullWidth
               label="User Name"
-              value={userForm.userName}
+              value={userForm.username}
               onChange={(e) =>
-                setUserForm({ ...userForm, userName: e.target.value })
+                setUserForm({ ...userForm, username: e.target.value })
               }
               sx={{ mb: 2 }}
             />
@@ -132,7 +132,7 @@ const UserFormDialog = ({
               type="password"
               value={userForm.pass}
               onChange={(e) =>
-                setUserForm({ ...userForm, pass: e.target.value })
+                setUserForm({ ...userForm, password: e.target.value })
               }
               sx={{ mb: 2 }}
             />
@@ -178,11 +178,11 @@ const UserFormDialog = ({
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={userForm.accountStatus === "Active"}
+                  checked={userForm.accountStatus === "UNLOCK"}
                   onChange={(e) =>
                     setUserForm({
                       ...userForm,
-                      accountStatus: e.target.checked ? "Active" : "Inactive",
+                      accountStatus: e.target.checked ? "UNLOCK" : "LOCK",
                     })
                   }
                 />
@@ -192,7 +192,7 @@ const UserFormDialog = ({
             />
           </Box>
         );
-      case 2:
+      case 1:
         return (
           <Box sx={{ mt: 2 }}>
             {/* Select Profile */}

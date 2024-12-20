@@ -7,10 +7,10 @@ router.post("/login", async (req, res) => {
 
   try {
     const result = await login(username, password, isAdmin);
-    res.status(200).send(result.message);
+    res.status(200).send(result);
   } catch (err) {
     console.error("Error during login: ", err);
-    res.status(400).send(err.message);
+    res.status(400).send({ message: err.message });
   }
 });
 

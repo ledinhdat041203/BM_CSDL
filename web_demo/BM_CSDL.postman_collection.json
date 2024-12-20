@@ -1,0 +1,941 @@
+{
+	"info": {
+		"_postman_id": "a9f5a054-8736-4659-a386-610bedeacfe5",
+		"name": "BM_CSDL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29987980"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"SYS\",\r\n\"password\": \"ledinhdat\",\r\n\"isAdmin\": true\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER11\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": \"USERS\",\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/delete?username=TEST_USER11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "TEST_USER11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/find-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all tablespace",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/find-all-tablespace",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"find-all-tablespace"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"profileName\": \"profile_da1t1\",\r\n      \"sessionPerUser\": \"1\",\r\n      \"connectTime\": \"2\",\r\n      \"idleTime\": \"1\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"profileName\": \"PROFILE234\",\r\n      \"sessionPerUser\": \"1\",\r\n      \"connectTime\": \"2\",\r\n      \"idleTime\": \"1\",\r\n      \"passLife\": 2,\r\n      \"failLogin\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/delete?profileName=profile2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "profileName",
+									"value": "profile2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/find-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/detail?profileName=PROFILE234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "profileName",
+									"value": "PROFILE234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all name Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/profile/find-all-name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"profile",
+								"find-all-name"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "role",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"roleName\": \"role_test_12\"\r\n    //   \"pass\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"roleName\": \"role_test_12\",\r\n      \"pass\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/delete?roleName=ROLE_TEST_12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "roleName",
+									"value": "ROLE_TEST_12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/find-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all role and user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/find-all-role-user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"find-all-role-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/find-all-name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"find-all-name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"username\": \"TEST_USER\",\r\n      \"password\": \"ledinhdat\",\r\n    //   \"defaultTablespace\": null,\r\n    //   \"tempTablespace\": null,\r\n      \"quota\": \"50M\",\r\n      \"accountStatus\": \"UNLOCK\",\r\n      \"profile\": \"DEFAULT\",\r\n      \"role\": \"MYROLE\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/role/find-all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"role",
+								"find-all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "permission",
+			"item": [
+				{
+					"name": "grant sys permission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"MYROLE\",\r\n      \"grantOption\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/grant-sys-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"grant-sys-permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke sys permission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/revoke-sys-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"revoke-sys-permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all sys permission of role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/find-all-sys-permission-of-role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"find-all-sys-permission-of-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all obj permission of role Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/find-all-obj-permission-of-role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"find-all-obj-permission-of-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find my role",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/find-my-role",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"find-my-role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all sys permission Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/find-all-sys-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"find-all-sys-permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all obj permission",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"CREATE PROFILE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/find-all-obj-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"find-all-obj-permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke object permission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"SELECT\",\r\n      \"table\": \"data_manager.employees\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/revoke-obj-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"revoke-obj-permission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "grant object permission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"name\": \"leduong\",\r\n      \"permission\": \"SELECT\",\r\n      \"table\": \"data_manager.employees\",\r\n      \"grantOption\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permission/grant-obj-permission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permission",
+								"grant-obj-permission"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
